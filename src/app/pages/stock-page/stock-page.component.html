@@ -1,0 +1,11 @@
+﻿<main class="stock-page">
+  <section class="stock-page__list" aria-label="Inventario">
+    @for (product of products$ | async; track product.id) {
+      <app-stock-product-row
+        [product]="product"
+        (increase)="increase($event)"
+        (decrease)="decrease($event)"
+      />
+    }
+  </section>
+</main>
