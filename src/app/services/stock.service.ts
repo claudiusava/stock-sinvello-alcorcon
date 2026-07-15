@@ -26,7 +26,7 @@ export class StockService {
   ) as CollectionReference<StockProduct>;
 
   readonly products$: Observable<StockProduct[]> = collectionData(
-    query(this.productsCollection, orderBy('orden')),
+    query(this.productsCollection, orderBy('nombre')),
     { idField: 'id' },
   );
 
