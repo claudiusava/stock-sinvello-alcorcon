@@ -1,29 +1,24 @@
-.backdrop {
-  position: fixed;
-  inset: 0;
-  background: rgba(0,0,0,.45);
+@use '../../../styles/variables' as *;
 
+:host {
+  display: block;
+}
+
+.create-product__title {
+  margin: 0 0 28px;
+  font-size: 2rem;
+  color: $color-text;
+}
+
+.create-product__form {
   display: flex;
-  align-items: center;
-  justify-content: center;
-
-  z-index: 1000;
+  flex-direction: column;
+  gap: 18px;
 }
 
-.modal {
-  background: white;
-  border-radius: 20px;
-  padding: 32px;
-  width: 420px;
-  max-width: calc(100vw - 32px);
-
-  box-shadow: 0 20px 50px rgba(0,0,0,.2);
-}
-
-h2 {
-  margin-top: 0;
-}
-
-button {
-  margin-top: 24px;
+.create-product__footer {
+  display: flex;
+  justify-content: flex-end;
+  gap: 12px;
+  margin-top: 32px;
 }

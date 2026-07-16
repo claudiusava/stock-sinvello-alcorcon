@@ -1,0 +1,41 @@
+@use './variables' as *;
+
+.button {
+
+  padding: 12px 22px;
+
+  border: 0;
+
+  border-radius: 12px;
+
+  font-size: 1rem;
+
+  font-weight: 600;
+
+  cursor: pointer;
+
+  transition: .15s;
+}
+
+.button:hover:not(:disabled) {
+  transform: translateY(-1px);
+}
+
+.button:active:not(:disabled) {
+  transform: scale(.98);
+}
+
+.button:disabled {
+  opacity: .45;
+  cursor: default;
+}
+
+.button--primary {
+  background: $color-primary;
+  color: white;
+}
+
+.button--secondary {
+  background: $color-dark;
+  color: white;
+}

@@ -1,35 +1,45 @@
-<div class="backdrop" (click)="cancel.emit()">
-  <div class="modal" (click)="$event.stopPropagation()">
-    <h2>Nuevo producto</h2>
+<h2 class="create-product__title">Nuevo producto</h2>
 
-    <form [formGroup]="form">
-      <label>
-        Nombre
-        <input type="text" formControlName="nombre" />
-      </label>
+<form class="create-product__form" [formGroup]="form" (ngSubmit)="save()">
+  <div class="form-field">
+    <label for="nombre">Nombre</label>
 
-      <label>
-        Emoji
-        <input type="text" maxlength="2" formControlName="emoji" />
-      </label>
-
-      <label>
-        Unidad
-        <input type="text" formControlName="unidad" />
-      </label>
-
-      <label>
-        Stock inicial
-        <input type="number" formControlName="stock" />
-      </label>
-    </form>
-
-    <footer>
-      <button type="button" (click)="cancel.emit()">Cancelar</button>
-
-      <button type="button" (click)="save()" [disabled]="form.invalid">
-        Guardar
-      </button>
-    </footer>
+    <input #nombreInput id="nombre" type="text" formControlName="nombre" />
   </div>
-</div>
+
+  <div class="form-field">
+    <label for="emoji">Emoji</label>
+
+    <input id="emoji" type="text" maxlength="2" formControlName="emoji" />
+  </div>
+
+  <div class="form-field">
+    <label for="unidad">Unidad</label>
+
+    <input id="unidad" type="text" formControlName="unidad" />
+  </div>
+
+  <div class="form-field">
+    <label for="stock">Stock inicial</label>
+
+    <input id="stock" type="number" formControlName="stock" />
+  </div>
+</form>
+
+<footer class="create-product__footer">
+  <button
+    class="button button--secondary"
+    type="button"
+    (click)="cancel.emit()"
+  >
+    Cancelar
+  </button>
+
+  <button
+    class="button button--primary"
+    type="submit"
+    [disabled]="form.invalid"
+  >
+    Guardar
+  </button>
+</footer>

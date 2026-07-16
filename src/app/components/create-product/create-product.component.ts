@@ -5,7 +5,11 @@ import {
   output,
 } from '@angular/core';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
-
+import {
+  AfterViewInit,
+  ElementRef,
+  ViewChild,
+} from '@angular/core';
 import { StockService } from '../../services/stock.service';
 
 @Component({
@@ -16,7 +20,7 @@ import { StockService } from '../../services/stock.service';
   styleUrl: './create-product.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class CreateProductComponent {
+export class CreateProductComponent implements AfterViewInit {
   readonly cancel = output<void>();
 
   readonly saved = output<void>();
@@ -32,6 +36,9 @@ export class CreateProductComponent {
     stock: [0, [Validators.required, Validators.min(0)]],
   });
 
+  @ViewChild('nombreInput')
+private readonly nombreInput?: ElementRef<HTMLInputElement>;
+
   async save(): Promise<void> {
     if (this.form.invalid) {
       return;
@@ -45,4 +52,8 @@ export class CreateProductComponent {
       alert(error instanceof Error ? error.message : 'Ha ocurrido un error.');
     }
   }
+
+  ngAfterViewInit(): void {
+  this.nombreInput?.nativeElement.focus();
+}
 }
