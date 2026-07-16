@@ -1,0 +1,35 @@
+<div class="backdrop" (click)="cancel.emit()">
+  <div class="modal" (click)="$event.stopPropagation()">
+    <h2>Nuevo producto</h2>
+
+    <form [formGroup]="form">
+      <label>
+        Nombre
+        <input type="text" formControlName="nombre" />
+      </label>
+
+      <label>
+        Emoji
+        <input type="text" maxlength="2" formControlName="emoji" />
+      </label>
+
+      <label>
+        Unidad
+        <input type="text" formControlName="unidad" />
+      </label>
+
+      <label>
+        Stock inicial
+        <input type="number" formControlName="stock" />
+      </label>
+    </form>
+
+    <footer>
+      <button type="button" (click)="cancel.emit()">Cancelar</button>
+
+      <button type="button" (click)="save()" [disabled]="form.invalid">
+        Guardar
+      </button>
+    </footer>
+  </div>
+</div>

@@ -1,13 +1,21 @@
-<div class="backdrop" (click)="close.emit()">
-  <div class="modal" (click)="$event.stopPropagation()">
+<div class="backdrop">
+  <div class="modal">
+    @switch (view()) {
+      @case ("menu") {
+        <app-admin-menu
+          (createProduct)="openCreateProduct()"
+          (manageProducts)="openManageProducts()"
+          (close)="close.emit()"
+        />
+      }
 
-    <h2>Administración</h2>
+      @case ("create-product") {
+        <app-create-product (cancel)="backToMenu()" (saved)="close.emit()" />
+      }
 
-    <p>Modo administrador</p>
-
-    <button type="button" (click)="close.emit()">
-      Cerrar
-    </button>
-
+      @case ("manage-products") {
+        <app-manage-products />
+      }
+    }
   </div>
 </div>

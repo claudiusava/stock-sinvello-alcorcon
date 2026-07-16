@@ -1,0 +1,86 @@
+@use '../../../styles/variables' as *;
+
+:host {
+  display: block;
+}
+
+.admin-menu__title {
+  margin: 0 0 24px;
+  font-size: 2rem;
+  color: $color-text;
+}
+
+.admin-menu {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.admin-menu__card {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+
+  width: 100%;
+
+  padding: 20px;
+
+  background: white;
+
+  border: 1px solid $color-border;
+  border-radius: $border-radius;
+
+  cursor: pointer;
+
+  transition:
+    transform .15s,
+    box-shadow .15s;
+
+  box-shadow: $shadow-card;
+
+  text-align: left;
+}
+
+.admin-menu__card:hover {
+  transform: translateY(-2px);
+}
+
+.admin-menu__card:active {
+  transform: scale(.98);
+}
+
+.admin-menu__icon {
+  font-size: 2rem;
+}
+
+.admin-menu__card strong {
+  display: block;
+  font-size: 1.15rem;
+  color: $color-text;
+}
+
+.admin-menu__card small {
+  display: block;
+  margin-top: 4px;
+  color: $color-text-secondary;
+}
+
+.admin-menu__footer {
+  display: flex;
+  justify-content: flex-end;
+
+  margin-top: 28px;
+}
+
+.admin-menu__cancel {
+  padding: 10px 20px;
+
+  border: 0;
+
+  border-radius: 12px;
+
+  background: $color-dark;
+  color: white;
+
+  cursor: pointer;
+}

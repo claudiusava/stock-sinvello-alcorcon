@@ -4,7 +4,6 @@ import { HostListener, signal } from '@angular/core';
 import { StockProductRowComponent } from '../../components/stock-product-row/stock-product-row.component';
 import { StockService } from '../../services/stock.service';
 import { AdminModalComponent } from '../../components/admin-modal/admin-modal.component';
-
 @Component({
   selector: 'app-stock-page',
   standalone: true,
@@ -29,22 +28,18 @@ export class StockPageComponent {
   readonly adminOpen = signal(false);
 
   @HostListener('window:keydown', ['$event'])
-onKeyDown(event: KeyboardEvent): void {
-  if (
-    event.ctrlKey &&
-    event.shiftKey &&
-    event.key.toLowerCase() === 'a'
-  ) {
-    event.preventDefault();
+  onKeyDown(event: KeyboardEvent): void {
+    if (event.ctrlKey && event.shiftKey && event.key.toLowerCase() === 'a') {
+      event.preventDefault();
 
-    this.adminOpen.set(true);
+      this.adminOpen.set(true);
+    }
   }
-}
   closeAdmin(): void {
-  this.adminOpen.set(false);
-}
+    this.adminOpen.set(false);
+  }
 
   constructor() {
-  // this.stockService.seedDatabase();
-}
+    // this.stockService.seedDatabase();
+  }
 }

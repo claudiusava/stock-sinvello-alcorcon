@@ -9,12 +9,14 @@ import {
   orderBy,
   query,
   updateDoc,
+  getDoc,
 } from '@angular/fire/firestore';
 import { Observable } from 'rxjs';
 import { INITIAL_PRODUCTS } from '../data/initialProducts';
 import { StockProduct } from '../models/stock-product.model';
 import { setDoc } from '@angular/fire/firestore';
-
+import { addDoc } from '@angular/fire/firestore';
+import { CreateProduct } from '../models/create-product.model';
 
 @Injectable({
   providedIn: 'root',
@@ -39,17 +41,40 @@ export class StockService {
     });
   }
 
-  async seedDatabase(): Promise<void> {
-  for (const product of INITIAL_PRODUCTS) {
-    const { id, ...data } = product;
+  async createProduct(product: CreateProduct): Promise<void> {
+    const id = this.createProductId(product.nombre);
 
-    await setDoc(
-      doc(this.firestore, 'products', id),
-      data
-    );
+    const productRef = doc(this.firestore, 'products', id);
+
+    const snapshot = await getDoc(productRef);
+
+    if (snapshot.exists()) {
+      throw new Error('Ya existe un producto con ese nombre.');
+    }
+
+    await setDoc(productRef, {
+      ...product,
+      activo: true,
+    });
   }
 
-  console.log('Base de datos inicializada');
-}
+  private createProductId(nombre: string): string {
+    return nombre
+      .trim()
+      .toLowerCase()
+      .normalize('NFD')
+      .replace(/[\u0300-\u036f]/g, '')
+      .replace(/[^a-z0-9]+/g, '-')
+      .replace(/^-|-$/g, '');
+  }
 
+  async seedDatabase(): Promise<void> {
+    for (const product of INITIAL_PRODUCTS) {
+      const { id, ...data } = product;
+
+      await setDoc(doc(this.firestore, 'products', id), data);
+    }
+
+    console.log('Base de datos inicializada');
+  }
 }
