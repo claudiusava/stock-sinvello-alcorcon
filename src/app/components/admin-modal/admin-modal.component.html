@@ -1,0 +1,13 @@
+<div class="backdrop" (click)="close.emit()">
+  <div class="modal" (click)="$event.stopPropagation()">
+
+    <h2>Administración</h2>
+
+    <p>Modo administrador</p>
+
+    <button type="button" (click)="close.emit()">
+      Cerrar
+    </button>
+
+  </div>
+</div>

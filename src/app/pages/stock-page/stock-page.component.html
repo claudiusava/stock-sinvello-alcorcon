@@ -8,4 +8,10 @@
       />
     }
   </section>
+
+  @if (adminOpen()) {
+  <app-admin-modal
+    (close)="closeAdmin()"
+  />
+}
 </main>
