@@ -10,6 +10,7 @@ import {
   query,
   updateDoc,
   getDoc,
+  where
 } from '@angular/fire/firestore';
 import { Observable } from 'rxjs';
 import { INITIAL_PRODUCTS } from '../data/initialProducts';
@@ -30,6 +31,15 @@ export class StockService {
 
   readonly products$: Observable<StockProduct[]> = collectionData(
     query(this.productsCollection, orderBy('nombre')),
+    { idField: 'id' },
+  );
+
+  readonly activeProducts$: Observable<StockProduct[]> = collectionData(
+    query(
+      this.productsCollection,
+      where('activo', '==', true),
+      orderBy('nombre'),
+    ),
     { idField: 'id' },
   );
 
@@ -66,6 +76,12 @@ export class StockService {
       .replace(/[\u0300-\u036f]/g, '')
       .replace(/[^a-z0-9]+/g, '-')
       .replace(/^-|-$/g, '');
+  }
+
+  async updateProductStatus(productId: string, activo: boolean): Promise<void> {
+    await updateDoc(doc(this.firestore, 'products', productId), {
+      activo,
+    });
   }
 
   async seedDatabase(): Promise<void> {

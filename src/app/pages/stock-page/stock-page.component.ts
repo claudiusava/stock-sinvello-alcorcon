@@ -15,7 +15,7 @@ import { AdminModalComponent } from '../../components/admin-modal/admin-modal.co
 export class StockPageComponent {
   private readonly stockService = inject(StockService);
 
-  readonly products$ = this.stockService.products$;
+  readonly products$ = this.stockService.activeProducts$;
 
   increase(productId: string): void {
     void this.stockService.changeStock(productId, 1);
@@ -40,6 +40,6 @@ export class StockPageComponent {
   }
 
   constructor() {
-    // this.stockService.seedDatabase();
+    this.stockService.seedDatabase();
   }
 }

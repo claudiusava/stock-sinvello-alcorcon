@@ -1,0 +1,62 @@
+@use '../../../styles/variables' as *;
+
+:host {
+  display: block;
+}
+
+.manage-products__title {
+  margin: 0 0 24px;
+  font-size: 2rem;
+  color: $color-text;
+}
+
+.manage-products__list {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+
+  max-height: 420px;
+  overflow-y: auto;
+}
+
+.manage-products__row {
+
+  display: flex;
+
+  justify-content: space-between;
+
+  align-items: center;
+
+  padding: 14px 18px;
+
+  border: 1px solid $color-border;
+
+  border-radius: $border-radius;
+}
+
+.manage-products__info {
+
+  display: flex;
+
+  align-items: center;
+
+  gap: 14px;
+}
+
+.manage-products__status {
+  font-size: 1.25rem;
+}
+
+.manage-products__name {
+  font-size: 1.05rem;
+  font-weight: 600;
+}
+
+.manage-products__footer {
+
+  display: flex;
+
+  justify-content: flex-end;
+
+  margin-top: 24px;
+}
