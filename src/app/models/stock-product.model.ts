@@ -4,4 +4,5 @@
   emoji: string;
   unidad: string;
   stock: number;
+  activo: boolean;
 }

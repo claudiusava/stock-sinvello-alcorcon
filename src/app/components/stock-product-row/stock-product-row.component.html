@@ -10,21 +10,23 @@
   </button>
 
   <div class="stock-row__product">
-    <span class="stock-row__emoji" aria-hidden="true">{{ product.emoji }}</span>
-    <span class="stock-row__name">{{ product.nombre }}</span>
+    <span class="stock-row__emoji">{{ product.emoji }}</span>
+    <h2 class="stock-row__name">{{ product.nombre }}</h2>
   </div>
 
-  <button
-    class="stock-row__button stock-row__button--plus"
-    type="button"
-    [attr.aria-label]="'Sumar stock de ' + product.nombre"
-    (click)="increase.emit(product.id)"
-  >
-    +
-  </button>
+  <div class="stock-row__right">
+    <button
+      class="stock-row__button stock-row__button--plus"
+      type="button"
+      [attr.aria-label]="'Sumar stock de ' + product.nombre"
+      (click)="increase.emit(product.id)"
+    >
+      +
+    </button>
 
-  <div class="stock-row__stock" aria-live="polite">
-    <strong>{{ product.stock }}</strong>
-    <span>{{ product.unidad }}</span>
+    <div class="stock-row__stock" aria-live="polite">
+      <strong>{{ product.stock }}</strong>
+      <span>{{ product.unidad }}</span>
+    </div>
   </div>
 </article>
