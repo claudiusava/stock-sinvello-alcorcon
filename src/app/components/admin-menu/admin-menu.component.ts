@@ -1,8 +1,4 @@
-import {
-  ChangeDetectionStrategy,
-  Component,
-  output,
-} from '@angular/core';
+import { ChangeDetectionStrategy, Component, output } from '@angular/core';
 
 @Component({
   selector: 'app-admin-menu',
@@ -13,11 +9,9 @@ import {
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class AdminMenuComponent {
-
   readonly createProduct = output<void>();
 
   readonly manageProducts = output<void>();
 
   readonly close = output<void>();
-
 }

@@ -1,4 +1,4 @@
-@use '../../../styles/variables' as *;
+@use "../../../styles/variables" as *;
 
 :host {
   display: block;
@@ -20,7 +20,6 @@
 }
 
 .manage-products__row {
-
   display: flex;
 
   justify-content: space-between;
@@ -35,12 +34,17 @@
 }
 
 .manage-products__info {
-
   display: flex;
 
   align-items: center;
 
   gap: 14px;
+}
+
+.manage-products__actions {
+  display: flex;
+  align-items: center;
+  gap: 12px;
 }
 
 .manage-products__status {
@@ -53,7 +57,6 @@
 }
 
 .manage-products__footer {
-
   display: flex;
 
   justify-content: flex-end;

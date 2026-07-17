@@ -1,4 +1,6 @@
-<h2 class="create-product__title">Nuevo producto</h2>
+<h2 class="create-product__title">
+  {{ isEditMode ? "Editar producto" : "Nuevo producto" }}
+</h2>
 
 <form class="create-product__form" [formGroup]="form" (ngSubmit)="save()">
   <div class="form-field">
@@ -24,22 +26,22 @@
 
     <input id="stock" type="number" formControlName="stock" />
   </div>
+
+  <footer class="create-product__footer">
+    <button
+      class="button button--secondary"
+      type="button"
+      (click)="cancel.emit()"
+    >
+      Cancelar
+    </button>
+
+    <button
+      class="button button--primary"
+      type="submit"
+      [disabled]="form.invalid"
+    >
+      Guardar
+    </button>
+  </footer>
 </form>
-
-<footer class="create-product__footer">
-  <button
-    class="button button--secondary"
-    type="button"
-    (click)="cancel.emit()"
-  >
-    Cancelar
-  </button>
-
-  <button
-    class="button button--primary"
-    type="submit"
-    [disabled]="form.invalid"
-  >
-    Guardar
-  </button>
-</footer>

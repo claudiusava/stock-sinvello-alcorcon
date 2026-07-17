@@ -1,49 +1,42 @@
-<h2 class="manage-products__title">
-  Gestión de productos
-</h2>
+<h2 class="manage-products__title">Gestión de productos</h2>
 
 <div class="manage-products__list">
-
   @for (product of products$ | async; track product.id) {
-
     <div class="manage-products__row">
-
       <div class="manage-products__info">
-
         <span class="manage-products__status">
-          {{ product.activo ? '🟢' : '🔴' }}
+          {{ product.activo ? "🟢" : "🔴" }}
         </span>
 
         <span class="manage-products__name">
           {{ product.nombre }}
         </span>
-
       </div>
 
-      <button
-        class="button"
-        type="button"
-        (click)="toggleProduct(product.id, product.activo)">
+      <div class="manage-products__actions">
+        <button
+          class="button button--secondary"
+          type="button"
+          (click)="edit(product)"
+        >
+          Editar
+        </button>
 
-        {{ product.activo ? 'Desactivar' : 'Activar' }}
-
-      </button>
-
+        <app-toggle
+          [checked]="product.activo"
+          (changed)="toggleProduct(product.id, product.activo)"
+        ></app-toggle>
+      </div>
     </div>
-
   }
-
 </div>
 
 <footer class="manage-products__footer">
-
   <button
-    class="button button--secondary"
+    class="button button--secondary button--small"
     type="button"
-    (click)="back.emit()">
-
+    (click)="back.emit()"
+  >
     Volver
-
   </button>
-
 </footer>

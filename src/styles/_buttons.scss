@@ -17,6 +17,12 @@
   transition: .15s;
 }
 
+.button--small {
+  padding: 8px 14px;
+  font-size: 0.9rem;
+  min-height: auto;
+}
+
 .button:hover:not(:disabled) {
   transform: translateY(-1px);
 }
@@ -38,4 +44,22 @@
 .button--secondary {
   background: $color-dark;
   color: white;
+}
+
+.button--success {
+  background-color: $color-success;
+  color: white;
+
+  &:hover {
+    background-color: $color-success-hover;
+  }
+}
+
+.button--danger {
+  background-color: $color-danger;
+  color: white;
+
+  &:hover {
+    background-color: $color-danger-hover;
+  }
 }

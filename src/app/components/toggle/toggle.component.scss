@@ -1,0 +1,31 @@
+@use "../../../styles/variables" as *;
+
+.toggle {
+  position: relative;
+  width: 52px;
+  height: 30px;
+  border: none;
+  border-radius: 999px;
+  background: $color-border;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.toggle--checked {
+  background: $color-success;
+}
+
+.toggle__thumb {
+  position: absolute;
+  top: 3px;
+  left: 3px;
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  background: white;
+  transition: transform 0.2s ease;
+}
+
+.toggle--checked .toggle__thumb {
+  transform: translateX(22px);
+}

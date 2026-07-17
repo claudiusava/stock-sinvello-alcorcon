@@ -1,44 +1,31 @@
 <h2 class="admin-menu__title">Administración</h2>
 
 <div class="admin-menu">
-
-  <button
-    class="admin-menu__card"
-    type="button"
-    (click)="createProduct.emit()">
-
+  <button class="admin-menu__card" type="button" (click)="createProduct.emit()">
     <span class="admin-menu__icon">➕</span>
 
     <div>
       <strong>Añadir producto</strong>
       <small>Crear un nuevo producto</small>
     </div>
-
   </button>
 
   <button
     class="admin-menu__card"
     type="button"
-    (click)="manageProducts.emit()">
-
+    (click)="manageProducts.emit()"
+  >
     <span class="admin-menu__icon">📦</span>
 
     <div>
       <strong>Gestionar productos</strong>
       <small>Activar o desactivar productos</small>
     </div>
-
   </button>
-
 </div>
 
 <div class="admin-menu__footer">
-
-<button
-  class="button button--secondary"
-  type="button"
-  (click)="close.emit()">
-  Cancelar
-</button>
-
+  <button class="button button--secondary" type="button" (click)="close.emit()">
+    Cancelar
+  </button>
 </div>

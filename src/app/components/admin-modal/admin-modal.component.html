@@ -10,11 +10,18 @@
       }
 
       @case ("product-form") {
-        <app-product-form (cancel)="backToMenu()" (saved)="close.emit()" />
+        <app-product-form
+          [product]="selectedProduct()"
+          (cancel)="backToMenu()"
+          (saved)="close.emit()"
+        />
       }
 
       @case ("manage-products") {
-        <app-manage-products (back)="backToMenu()" />
+        <app-manage-products
+          (back)="backToMenu()"
+          (editProduct)="openEditProduct($event)"
+        />
       }
     }
   </div>
