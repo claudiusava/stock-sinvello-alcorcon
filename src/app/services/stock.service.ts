@@ -10,14 +10,13 @@ import {
   query,
   updateDoc,
   getDoc,
-  where
+  where,
 } from '@angular/fire/firestore';
 import { Observable } from 'rxjs';
-import { INITIAL_PRODUCTS } from '../data/initialProducts';
+import { INITIAL_PRODUCTS } from '../data/initial-products';
 import { StockProduct } from '../models/stock-product.model';
 import { setDoc } from '@angular/fire/firestore';
-import { addDoc } from '@angular/fire/firestore';
-import { CreateProduct } from '../models/create-product.model';
+import { ProductForm } from '../models/product-form.model';
 
 @Injectable({
   providedIn: 'root',
@@ -51,7 +50,7 @@ export class StockService {
     });
   }
 
-  async createProduct(product: CreateProduct): Promise<void> {
+  async createProduct(product: ProductForm): Promise<void> {
     const id = this.createProductId(product.nombre);
 
     const productRef = doc(this.firestore, 'products', id);
@@ -65,6 +64,18 @@ export class StockService {
     await setDoc(productRef, {
       ...product,
       activo: true,
+    });
+  }
+
+  async updateProduct(
+    productId: string,
+    product: ProductForm,
+  ): Promise<void> {
+    await updateDoc(doc(this.firestore, 'products', productId), {
+      nombre: product.nombre,
+      emoji: product.emoji,
+      unidad: product.unidad,
+      stock: product.stock,
     });
   }
 

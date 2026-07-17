@@ -1,6 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { AdminModalComponent } from './create-product.component';
+import { AdminModalComponent } from '../admin-modal/admin-modal.component';
 
 describe('AdminModalComponent', () => {
   let component: AdminModalComponent;

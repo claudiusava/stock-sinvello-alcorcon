@@ -9,8 +9,8 @@
         />
       }
 
-      @case ("create-product") {
-        <app-create-product (cancel)="backToMenu()" (saved)="close.emit()" />
+      @case ("product-form") {
+        <app-product-form (cancel)="backToMenu()" (saved)="close.emit()" />
       }
 
       @case ("manage-products") {

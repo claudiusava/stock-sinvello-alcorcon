@@ -6,12 +6,12 @@ import {
 } from '@angular/core';
 
 import { AdminMenuComponent } from '../admin-menu/admin-menu.component';
-import { CreateProductComponent } from '../create-product/create-product.component';
+import { ProductFormComponent } from '../product-form/product-form.component';
 import { ManageProductsComponent } from '../manage-products/manage-products.component';
 
 type AdminView =
   | 'menu'
-  | 'create-product'
+  | 'product-form'
   | 'manage-products';
 
 @Component({
@@ -19,7 +19,7 @@ type AdminView =
   standalone: true,
   imports: [
     AdminMenuComponent,
-    CreateProductComponent,
+    ProductFormComponent,
     ManageProductsComponent,
   ],
   templateUrl: './admin-modal.component.html',
@@ -32,7 +32,7 @@ export class AdminModalComponent {
   readonly view = signal<AdminView>('menu');
 
   openCreateProduct(): void {
-    this.view.set('create-product');
+    this.view.set('product-form');
   }
 
   openManageProducts(): void {

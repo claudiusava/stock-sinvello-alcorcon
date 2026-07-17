@@ -1,4 +1,4 @@
-export interface CreateProduct {
+export interface ProductForm {
   nombre: string;
   emoji: string;
   unidad: string;

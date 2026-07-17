@@ -13,14 +13,14 @@ import {
 import { StockService } from '../../services/stock.service';
 
 @Component({
-  selector: 'app-create-product',
+  selector: 'app-product-form',
   standalone: true,
   imports: [ReactiveFormsModule],
-  templateUrl: './create-product.component.html',
-  styleUrl: './create-product.component.scss',
+  templateUrl: './product-form.component.html',
+  styleUrl: './product-form.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class CreateProductComponent implements AfterViewInit {
+export class ProductFormComponent implements AfterViewInit {
   readonly cancel = output<void>();
 
   readonly saved = output<void>();
