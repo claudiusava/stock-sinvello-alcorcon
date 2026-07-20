@@ -4,6 +4,7 @@ import { HostListener, signal } from '@angular/core';
 import { StockProductRowComponent } from '../../components/stock-product-row/stock-product-row.component';
 import { StockService } from '../../services/stock.service';
 import { AdminModalComponent } from '../../components/admin-modal/admin-modal.component';
+
 @Component({
   selector: 'app-stock-page',
   standalone: true,
@@ -37,9 +38,5 @@ export class StockPageComponent {
   }
   closeAdmin(): void {
     this.adminOpen.set(false);
-  }
-
-  constructor() {
-    this.stockService.seedDatabase();
   }
 }

@@ -13,7 +13,6 @@ import {
   where,
 } from '@angular/fire/firestore';
 import { Observable } from 'rxjs';
-import { INITIAL_PRODUCTS } from '../data/initial-products';
 import { StockProduct } from '../models/stock-product.model';
 import { setDoc } from '@angular/fire/firestore';
 import { ProductForm } from '../models/product-form.model';
@@ -32,6 +31,10 @@ export class StockService {
     query(this.productsCollection, orderBy('nombre')),
     { idField: 'id' },
   );
+
+  getProducts(): Observable<StockProduct[]> {
+    return this.products$;
+  }
 
   readonly activeProducts$: Observable<StockProduct[]> = collectionData(
     query(
@@ -64,13 +67,13 @@ export class StockService {
     await setDoc(productRef, {
       ...product,
       activo: true,
+      consumoMensual: 0,
+      unidadesPorLote: 1,
+      tipoLote: 'unidad',
     });
   }
 
-  async updateProduct(
-    productId: string,
-    product: ProductForm,
-  ): Promise<void> {
+  async updateProduct(productId: string, product: ProductForm): Promise<void> {
     await updateDoc(doc(this.firestore, 'products', productId), {
       nombre: product.nombre,
       emoji: product.emoji,
@@ -93,15 +96,5 @@ export class StockService {
     await updateDoc(doc(this.firestore, 'products', productId), {
       activo,
     });
-  }
-
-  async seedDatabase(): Promise<void> {
-    for (const product of INITIAL_PRODUCTS) {
-      const { id, ...data } = product;
-
-      await setDoc(doc(this.firestore, 'products', id), data);
-    }
-
-    console.log('Base de datos inicializada');
   }
 }
