@@ -13,7 +13,6 @@ export class InventoryCalculator {
         productName: product.nombre,
         quantity: this.calculateOrderQuantity(product, mesesSeguridad),
         unit: product.unidad,
-        lotType: product.tipoLote,
       }));
   }
 
@@ -44,15 +43,6 @@ export class InventoryCalculator {
   ): number {
     const target = this.getTargetStock(product, mesesSeguridad);
 
-    const needed = target - product.stock;
-
-    if (needed <= 0) {
-      return 0;
-    }
-
-    return (
-      Math.ceil(needed / product.unidadesPorLote) *
-      product.unidadesPorLote
-    );
+    return Math.max(target - product.stock, 0);
   }
 }

@@ -24,16 +24,6 @@ export class InventoryEngineService {
   ): number {
     const target = this.getTargetStock(product, mesesSeguridad);
 
-    const needed = target - product.stock;
-
-    if (needed <= 0) {
-      return 0;
-    }
-
-    return this.roundToLotSize(needed, product.unidadesPorLote);
-  }
-
-  private roundToLotSize(quantity: number, lotSize: number): number {
-    return Math.ceil(quantity / lotSize) * lotSize;
+    return Math.max(target - product.stock, 0);
   }
 }

@@ -6,6 +6,4 @@ export interface StockProduct {
   stock: number;
   activo: boolean;
   consumoMensual: number;
-  unidadesPorLote: number;
-  tipoLote: string;
 }

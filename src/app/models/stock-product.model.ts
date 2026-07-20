@@ -9,7 +9,4 @@
   activo: boolean;
 
   consumoMensual: number;
-
-  unidadesPorLote: number;
-  tipoLote: string;
 }

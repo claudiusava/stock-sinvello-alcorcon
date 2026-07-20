@@ -68,8 +68,6 @@ export class StockService {
       ...product,
       activo: true,
       consumoMensual: 0,
-      unidadesPorLote: 1,
-      tipoLote: 'unidad',
     });
   }
 

@@ -3,5 +3,4 @@ export interface OrderItem {
   productName: string;
   quantity: number;
   unit: string;
-  lotType: string;
 }
