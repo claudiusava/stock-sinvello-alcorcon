@@ -1,11 +1,8 @@
-import {OrderItem} from "./models/order-item.model";
-import {StockProduct} from "./models/stock-product.model";
+import { OrderItem } from './models/order-item.model';
+import { StockProduct } from './models/stock-product.model';
 
 export class InventoryCalculator {
-  generateOrder(
-    products: StockProduct[],
-    mesesSeguridad: number,
-  ): OrderItem[] {
+  generateOrder(products: StockProduct[], mesesSeguridad: number): OrderItem[] {
     return products
       .filter((product) => this.needsRestock(product, mesesSeguridad))
       .map((product) => ({
@@ -16,10 +13,7 @@ export class InventoryCalculator {
       }));
   }
 
-  private needsRestock(
-    product: StockProduct,
-    mesesSeguridad: number,
-  ): boolean {
+  private needsRestock(product: StockProduct, mesesSeguridad: number): boolean {
     return product.stock < this.getMinimumStock(product, mesesSeguridad);
   }
 

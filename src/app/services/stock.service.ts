@@ -5,17 +5,20 @@ import {
   collection,
   collectionData,
   doc,
+  getDoc,
   increment,
   orderBy,
   query,
+  serverTimestamp,
+  setDoc,
   updateDoc,
-  getDoc,
   where,
+  writeBatch,
 } from '@angular/fire/firestore';
 import { Observable } from 'rxjs';
 import { StockProduct } from '../models/stock-product.model';
-import { setDoc } from '@angular/fire/firestore';
 import { ProductForm } from '../models/product-form.model';
+import { StockMovement } from '../models/stock-movement.model';
 
 @Injectable({
   providedIn: 'root',
@@ -45,12 +48,30 @@ export class StockService {
     { idField: 'id' },
   );
 
-  changeStock(productId: string, amount: 1 | -1): Promise<void> {
-    const productRef = doc(this.productsCollection, productId);
+  async changeStock(productId: string, amount: 1 | -1): Promise<void> {
+    const batch = writeBatch(this.firestore);
 
-    return updateDoc(productRef, {
+    const productRef = doc(this.firestore, 'products', productId);
+
+    batch.update(productRef, {
       stock: increment(amount),
     });
+
+    const movementRef = doc(collection(this.firestore, 'stockMovements'));
+
+    const now = new Date();
+
+    const movement: StockMovement = {
+      productId,
+      quantity: amount,
+      year: now.getFullYear(),
+      month: now.getMonth() + 1,
+      createdAt: serverTimestamp(),
+    };
+
+    batch.set(movementRef, movement);
+
+    await batch.commit();
   }
 
   async createProduct(product: ProductForm): Promise<void> {
