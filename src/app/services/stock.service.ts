@@ -95,7 +95,6 @@ export class StockService {
   async updateProduct(productId: string, product: ProductForm): Promise<void> {
     await updateDoc(doc(this.firestore, 'products', productId), {
       nombre: product.nombre,
-      emoji: product.emoji,
       unidad: product.unidad,
       stock: product.stock,
     });

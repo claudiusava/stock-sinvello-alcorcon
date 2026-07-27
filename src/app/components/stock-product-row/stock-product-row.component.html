@@ -10,7 +10,13 @@
   </button>
 
   <div class="stock-row__product">
-    <span class="stock-row__emoji">{{ product.emoji }}</span>
+    <span class="stock-row__emoji">
+      <img
+        class="product-icon"
+        [src]="'icons/' + product.id + '.png'"
+        [alt]="product.nombre"
+      />
+    </span>
     <h2 class="stock-row__name">{{ product.nombre }}</h2>
   </div>
 

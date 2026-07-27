@@ -27,7 +27,6 @@ export class ProductFormComponent implements AfterViewInit {
   private readonly fb = inject(FormBuilder);
   readonly form = this.fb.nonNullable.group({
     nombre: ['', Validators.required],
-    emoji: ['', Validators.required],
     unidad: ['', Validators.required],
     stock: [0, [Validators.required, Validators.min(0)]],
   });
@@ -45,7 +44,6 @@ export class ProductFormComponent implements AfterViewInit {
 
       this.form.patchValue({
         nombre: product.nombre,
-        emoji: product.emoji,
         unidad: product.unidad,
         stock: product.stock,
       });
