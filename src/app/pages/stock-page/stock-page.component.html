@@ -1,17 +1,22 @@
 ﻿<main class="stock-page">
   <section class="stock-page__list" aria-label="Inventario">
-    @for (product of products$ | async; track product.id) {
-      <app-stock-product-row
-        [product]="product"
-        (increase)="increase($event)"
-        (decrease)="decrease($event)"
-      />
+    @if (products$ | async; as products) {
+      @if (todayMovements$ | async; as todayMovements) {
+        @for (product of products; track product.id) {
+          <app-stock-product-row
+            [product]="product"
+            [todayMovement]="todayMovements[product.id]"
+            (increase)="increase($event)"
+            (decrease)="decrease($event)"
+          />
+        }
+      }
     }
   </section>
 
   @if (adminOpen()) {
-  <app-admin-modal
-    (close)="closeAdmin()"
-  />
-}
+    <app-admin-modal
+      (close)="closeAdmin()"
+    />
+  }
 </main>

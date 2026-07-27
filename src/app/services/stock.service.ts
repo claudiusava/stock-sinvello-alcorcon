@@ -66,7 +66,7 @@ export class StockService {
       quantity: amount,
       year: now.getFullYear(),
       month: now.getMonth() + 1,
-      createdAt: serverTimestamp(),
+      createdAt: serverTimestamp() as never,
     };
 
     batch.set(movementRef, movement);

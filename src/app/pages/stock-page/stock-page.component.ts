@@ -1,9 +1,10 @@
 ﻿import { AsyncPipe } from '@angular/common';
-import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
-import { HostListener, signal } from '@angular/core';
-import { StockProductRowComponent } from '../../components/stock-product-row/stock-product-row.component';
-import { StockService } from '../../services/stock.service';
+import { ChangeDetectionStrategy, Component, HostListener, inject, signal } from '@angular/core';
+
 import { AdminModalComponent } from '../../components/admin-modal/admin-modal.component';
+import { StockProductRowComponent } from '../../components/stock-product-row/stock-product-row.component';
+import { StockMovementService } from '../../services/stock-movement.service';
+import { StockService } from '../../services/stock.service';
 
 @Component({
   selector: 'app-stock-page',
@@ -15,8 +16,14 @@ import { AdminModalComponent } from '../../components/admin-modal/admin-modal.co
 })
 export class StockPageComponent {
   private readonly stockService = inject(StockService);
+  private readonly stockMovementService = inject(StockMovementService);
 
   readonly products$ = this.stockService.activeProducts$;
+
+  readonly todayMovements$ =
+    this.stockMovementService.getTodayMovements();
+
+  readonly adminOpen = signal(false);
 
   increase(productId: string): void {
     void this.stockService.changeStock(productId, 1);
@@ -26,8 +33,6 @@ export class StockPageComponent {
     void this.stockService.changeStock(productId, -1);
   }
 
-  readonly adminOpen = signal(false);
-
   @HostListener('window:keydown', ['$event'])
   onKeyDown(event: KeyboardEvent): void {
     if (event.ctrlKey && event.shiftKey && event.key.toLowerCase() === 'a') {
@@ -36,6 +41,7 @@ export class StockPageComponent {
       this.adminOpen.set(true);
     }
   }
+
   closeAdmin(): void {
     this.adminOpen.set(false);
   }

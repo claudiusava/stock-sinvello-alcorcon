@@ -7,6 +7,7 @@
 } from '@angular/core';
 
 import { StockProduct } from '../../models/stock-product.model';
+import { TodayStockMovement } from '../../models/today-stock-movement.model';
 
 @Component({
   selector: 'app-stock-product-row',
@@ -17,6 +18,8 @@ import { StockProduct } from '../../models/stock-product.model';
 })
 export class StockProductRowComponent {
   @Input({ required: true }) product!: StockProduct;
+
+  @Input() todayMovement?: TodayStockMovement;
 
   @Output() increase = new EventEmitter<string>();
   @Output() decrease = new EventEmitter<string>();

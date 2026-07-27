@@ -9,6 +9,14 @@
     -
   </button>
 
+  <div class="stock-row__today-left">
+    @if (todayMovement?.consumed) {
+      <span class="stock-row__today-consumed">
+        -{{ todayMovement!.consumed }} hoy
+      </span>
+    }
+  </div>
+
   <div class="stock-row__product">
     <span class="stock-row__emoji">
       <img
@@ -17,7 +25,16 @@
         [alt]="product.nombre"
       />
     </span>
+
     <h2 class="stock-row__name">{{ product.nombre }}</h2>
+  </div>
+
+  <div class="stock-row__today-right">
+    @if (todayMovement?.added) {
+      <span class="stock-row__today-added">
+        +{{ todayMovement!.added }} hoy
+      </span>
+    }
   </div>
 
   <div class="stock-row__right">
