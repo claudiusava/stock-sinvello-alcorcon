@@ -37,6 +37,6 @@ export class InventoryCalculator {
   ): number {
     const target = this.getTargetStock(product, mesesSeguridad);
 
-    return Math.max(target - product.stock, 0);
+    return Math.ceil(Math.max(target - product.stock, 0));
   }
 }
