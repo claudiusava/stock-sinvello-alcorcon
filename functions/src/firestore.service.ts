@@ -43,6 +43,10 @@ export class FirestoreService {
       Math.floor((now.getTime() - startDateDate.getTime()) / ONE_DAY) + 1,
     );
 
+    if (elapsedDays < 30) {
+      return;
+    }
+
     const daysAnalyzed = Math.min(elapsedDays, MAX_DAYS);
 
     const windowStart = new Date(now.getTime() - (daysAnalyzed - 1) * ONE_DAY);
