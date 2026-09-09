@@ -4,10 +4,6 @@
   @for (product of products$ | async; track product.id) {
     <div class="manage-products__row">
       <div class="manage-products__info">
-        <span class="manage-products__status">
-          {{ product.activo ? "🟢" : "🔴" }}
-        </span>
-
         <span class="manage-products__name">
           {{ product.nombre }}
         </span>

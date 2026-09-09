@@ -16,7 +16,7 @@
   </div>
 
   <div class="form-field">
-    <label for="stock">Stock inicial</label>
+    <label for="stock">{{ isEditMode ? "Stock actual" : "Stock inicial" }}</label>
 
     <input id="stock" type="number" formControlName="stock" />
   </div>

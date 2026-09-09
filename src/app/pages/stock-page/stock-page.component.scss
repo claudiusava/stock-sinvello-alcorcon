@@ -7,6 +7,8 @@
   background: #ffffff;
   min-height: 100vh;
   padding: 24px;
+  // margen superior/inferior del tamaño aprox. de una fila de producto (112px)
+  padding-block: 112px;
 }
 
 .stock-page__list {
@@ -16,9 +18,11 @@
   max-width: 1120px;
 }
 
-@media (max-width: 720px) {
+@media (max-width: 900px) {
   .stock-page {
     padding: 12px;
+    // fila de producto en móvil es más alta (dos líneas)
+    padding-block: 170px;
   }
 
   .stock-page__list {
