@@ -1,15 +1,17 @@
 import {
+  AfterViewInit,
   ChangeDetectionStrategy,
   Component,
+  ElementRef,
+  ViewChild,
+  effect,
   inject,
+  input,
   output,
 } from '@angular/core';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
-import { AfterViewInit, ElementRef, ViewChild } from '@angular/core';
 import { StockService } from '../../services/stock.service';
-import { input } from '@angular/core';
 import { StockProduct } from '../../models/stock-product.model';
-import { effect } from '@angular/core';
 
 @Component({
   selector: 'app-product-form',

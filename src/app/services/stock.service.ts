@@ -6,14 +6,13 @@ import {
   collectionData,
   doc,
   getDoc,
-  increment,
   orderBy,
   query,
+  runTransaction,
   serverTimestamp,
   setDoc,
   updateDoc,
   where,
-  writeBatch,
 } from '@angular/fire/firestore';
 import { Observable } from 'rxjs';
 import { StockProduct } from '../models/stock-product.model';
@@ -49,29 +48,35 @@ export class StockService {
   );
 
   async changeStock(productId: string, amount: 1 | -1): Promise<void> {
-    const batch = writeBatch(this.firestore);
-
     const productRef = doc(this.firestore, 'products', productId);
 
-    batch.update(productRef, {
-      stock: increment(amount),
+    await runTransaction(this.firestore, async (transaction) => {
+      const productSnapshot = await transaction.get(productRef);
+
+      const currentStock = productSnapshot.data()?.['stock'] ?? 0;
+
+      const newStock = currentStock + amount;
+
+      if (newStock < 0) {
+        return;
+      }
+
+      transaction.update(productRef, { stock: newStock });
+
+      const movementRef = doc(collection(this.firestore, 'stockMovements'));
+
+      const now = new Date();
+
+      const movement: StockMovement = {
+        productId,
+        quantity: amount,
+        year: now.getFullYear(),
+        month: now.getMonth() + 1,
+        createdAt: serverTimestamp() as never,
+      };
+
+      transaction.set(movementRef, movement);
     });
-
-    const movementRef = doc(collection(this.firestore, 'stockMovements'));
-
-    const now = new Date();
-
-    const movement: StockMovement = {
-      productId,
-      quantity: amount,
-      year: now.getFullYear(),
-      month: now.getMonth() + 1,
-      createdAt: serverTimestamp() as never,
-    };
-
-    batch.set(movementRef, movement);
-
-    await batch.commit();
   }
 
   async createProduct(product: ProductForm): Promise<void> {
