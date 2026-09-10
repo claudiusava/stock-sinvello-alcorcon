@@ -4,11 +4,13 @@
 }
 
 .stock-page {
-  background: #ffffff;
+  // gris parecido al aviso superpuesto por el modo kiosko de la tablet,
+  // para que ese texto destaque lo menos posible por bajo contraste
+  background: #b0b0b0;
   min-height: 100vh;
   padding: 24px;
-  // margen superior/inferior del tamaño aprox. de una fila de producto (112px)
-  padding-block: 112px;
+  // margen superior/inferior del tamaño aprox. de una fila de producto y medio
+  padding-block: 160px;
 }
 
 .stock-page__list {
@@ -22,7 +24,7 @@
   .stock-page {
     padding: 12px;
     // fila de producto en móvil es más alta (dos líneas)
-    padding-block: 170px;
+    padding-block: 210px;
   }
 
   .stock-page__list {

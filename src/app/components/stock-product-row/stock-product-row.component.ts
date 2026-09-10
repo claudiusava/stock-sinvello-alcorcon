@@ -21,6 +21,10 @@ export class StockProductRowComponent {
 
   @Input() todayMovement?: TodayStockMovement;
 
+  get lowStock(): boolean {
+    return this.product.stock < this.product.consumoMensual;
+  }
+
   @Output() increase = new EventEmitter<string>();
   @Output() decrease = new EventEmitter<string>();
 }

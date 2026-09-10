@@ -17,6 +17,10 @@
   padding: 16px 20px;
 }
 
+.stock-row--low-stock {
+  background: $color-danger-soft;
+}
+
 .stock-row__button {
   align-items: center;
   border: 0;
