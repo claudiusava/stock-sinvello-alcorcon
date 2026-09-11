@@ -10,6 +10,7 @@ const db = getFirestore();
 
 const ONE_DAY = 24 * 60 * 60 * 1000;
 const MAX_DAYS = 365;
+const MIN_TRACKED_DAYS = 14;
 const DAYS_PER_MONTH = 30.44;
 
 export class FirestoreService {
@@ -34,22 +35,7 @@ export class FirestoreService {
   async refreshMonthlyConsumption(): Promise<void> {
     const now = new Date();
 
-    const { startDate } = await this.getSettings();
-
-    const startDateDate = startDate.toDate();
-
-    const elapsedDays = Math.max(
-      1,
-      Math.floor((now.getTime() - startDateDate.getTime()) / ONE_DAY) + 1,
-    );
-
-    if (elapsedDays < 30) {
-      return;
-    }
-
-    const daysAnalyzed = Math.min(elapsedDays, MAX_DAYS);
-
-    const windowStart = new Date(now.getTime() - (daysAnalyzed - 1) * ONE_DAY);
+    const windowStart = new Date(now.getTime() - (MAX_DAYS - 1) * ONE_DAY);
 
     const [productsSnapshot, movementsSnapshot] = await Promise.all([
       db.collection('products').get(),
@@ -60,6 +46,7 @@ export class FirestoreService {
     ]);
 
     const consumedByProduct = new Map<string, number>();
+    const earliestMovementByProduct = new Map<string, Date>();
 
     for (const movement of movementsSnapshot.docs) {
       const data = movement.data();
@@ -72,15 +59,36 @@ export class FirestoreService {
         data.productId,
         (consumedByProduct.get(data.productId) ?? 0) + Math.abs(data.quantity),
       );
+
+      const movementDate = (data.createdAt as Timestamp).toDate();
+      const earliestMovement = earliestMovementByProduct.get(data.productId);
+
+      if (!earliestMovement || movementDate < earliestMovement) {
+        earliestMovementByProduct.set(data.productId, movementDate);
+      }
     }
 
     const batch = db.batch();
 
     for (const product of productsSnapshot.docs) {
-      const totalConsumed = consumedByProduct.get(product.id) ?? 0;
+      const totalConsumed = consumedByProduct.get(product.id);
+      const earliestMovement = earliestMovementByProduct.get(product.id);
+
+      if (totalConsumed === undefined || !earliestMovement) {
+        continue;
+      }
+
+      const daysTracked = Math.max(
+        1,
+        Math.floor((now.getTime() - earliestMovement.getTime()) / ONE_DAY) + 1,
+      );
+
+      if (daysTracked < MIN_TRACKED_DAYS) {
+        continue;
+      }
 
       const consumoMensual = Number(
-        ((totalConsumed / daysAnalyzed) * DAYS_PER_MONTH).toFixed(2),
+        ((totalConsumed / daysTracked) * DAYS_PER_MONTH).toFixed(2),
       );
 
       batch.update(product.ref, {

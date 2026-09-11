@@ -44,11 +44,24 @@ export const refreshMonthlyConsumption = onSchedule(
 
 export const generateMonthlyOrder = onSchedule(
   {
-    schedule: "0 9 28-31 * *",
+    schedule: "0 9 * * *",
     timeZone: "Europe/Madrid",
     secrets: [telegramBotToken, telegramChatId],
   },
   async () => {
+    const now = new Date();
+
+    const tomorrow = new Date(now);
+    tomorrow.setDate(now.getDate() + 1);
+
+    const isLastDayOfMonth =
+      tomorrow.getMonth() !== now.getMonth();
+
+    if (!isLastDayOfMonth) {
+      logger.info("No es el último día del mes. No se genera pedido.");
+      return;
+    }
+
     const message = await generateOrderMessage();
 
     const telegram = new TelegramService();
