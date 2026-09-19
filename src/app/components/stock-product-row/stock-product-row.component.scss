@@ -15,6 +15,7 @@
   gap: 18px;
   min-height: 112px;
   padding: 16px 20px;
+  position: relative;
 }
 
 .stock-row--low-stock {
@@ -77,6 +78,19 @@
   overflow-wrap: anywhere;
 }
 
+.stock-row__consumo {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 4px;
+  color: #bbbbbb;
+  font-size: 0.65rem;
+  font-weight: 400;
+  line-height: 1;
+  text-align: center;
+  pointer-events: none;
+}
+
 .stock-row__right {
   display: grid;
   grid-template-columns: 88px 116px;
@@ -90,6 +104,8 @@
   justify-items: end;
   line-height: 1.05;
   min-width: 116px;
+  border-left: 1px solid #d4d4d4;
+  padding-left: 18px;
 }
 
 .stock-row__stock strong {
@@ -153,8 +169,16 @@
     font-size: 1.25rem;
   }
 
+  .stock-row__consumo {
+    position: static;
+    order: 6;
+    flex: 1 1 100%;
+    font-size: 0.6rem;
+  }
+
   .stock-row__stock {
     min-width: 96px;
+    padding-left: 12px;
   }
 
   .stock-row__stock strong {
