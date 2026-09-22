@@ -1,4 +1,3 @@
-import { onRequest } from "firebase-functions/v2/https";
 import { onSchedule } from "firebase-functions/v2/scheduler";
 import * as logger from "firebase-functions/logger";
 
@@ -67,20 +66,5 @@ export const generateMonthlyOrder = onSchedule(
     const telegram = new TelegramService();
 
     await telegram.sendMessage(message);
-  },
-);
-
-export const testGenerateMonthlyOrder = onRequest(
-  {
-    secrets: [telegramBotToken, telegramChatId],
-  },
-  async (request, response) => {
-    const message = await generateOrderMessage();
-
-    const telegram = new TelegramService();
-
-    await telegram.sendMessage(message);
-
-    response.send("Mensaje enviado");
   },
 );

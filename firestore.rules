@@ -1,0 +1,81 @@
+rules_version = '2';
+
+// Nota: la app no tiene ningun login (se usa en modo kiosko), asi que estas
+// reglas no pueden distinguir "quien" escribe, solo validar la FORMA de lo
+// que se escribe. La proteccion real contra scripts/curl externos viene de
+// Firebase App Check (ver src/app/app.config.ts). Cuando se confirme que el
+// trafico real de la app ya manda tokens de App Check validos (consola de
+// Firebase > App Check > metricas), se puede endurecer aun mas anadiendo
+// `request.app != null` a cada `allow` de aqui abajo. No hacerlo antes de
+// verificar eso, o se rompe el kiosko en produccion.
+
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    function isValidProduct(data) {
+      return data.nombre is string
+        && data.nombre.size() > 0
+        && data.nombre.size() <= 200
+        && data.unidad is string
+        && data.unidad.size() > 0
+        && data.unidad.size() <= 100
+        && data.stock is number
+        && data.stock >= 0
+        && data.stock <= 100000
+        && data.activo is bool
+        && data.consumoMensual is number
+        && data.consumoMensual >= 0
+        && data.consumoMensual <= 100000;
+    }
+
+    match /products/{productId} {
+      allow read: if true;
+
+      allow create: if productId.matches('^[a-z0-9-]+$')
+        && isValidProduct(request.resource.data)
+        && request.resource.data.activo == true
+        && request.resource.data.consumoMensual == 0
+        && request.resource.data.keys().hasOnly(
+          ['nombre', 'unidad', 'stock', 'activo', 'consumoMensual']
+        );
+
+      allow update: if isValidProduct(request.resource.data)
+        && request.resource.data.keys().hasOnly(
+          ['nombre', 'unidad', 'stock', 'activo', 'consumoMensual']
+        );
+
+      allow delete: if false;
+    }
+
+    match /stockMovements/{movementId} {
+      allow read: if true;
+
+      allow create: if request.resource.data.productId is string
+        && exists(/databases/$(database)/documents/products/$(request.resource.data.productId))
+        && request.resource.data.quantity in [1, -1]
+        && request.resource.data.year is number
+        && request.resource.data.year >= 2020
+        && request.resource.data.year <= 2100
+        && request.resource.data.month is number
+        && request.resource.data.month >= 1
+        && request.resource.data.month <= 12
+        && request.resource.data.createdAt is timestamp
+        && request.resource.data.keys().hasOnly(
+          ['productId', 'quantity', 'year', 'month', 'createdAt']
+        );
+
+      allow update, delete: if false;
+    }
+
+    // No se lee ni se escribe desde el cliente (solo Cloud Functions, que
+    // usan el Admin SDK y no pasan por estas reglas).
+    match /inventorySettings/{settingsId} {
+      allow read, write: if false;
+    }
+
+    // Cualquier otra coleccion no contemplada arriba: denegada por defecto.
+    match /{document=**} {
+      allow read, write: if false;
+    }
+  }
+}

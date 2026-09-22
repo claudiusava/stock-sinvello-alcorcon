@@ -1,0 +1,16 @@
+rules_version = '2';
+
+// Cloud Storage todavia no esta activado en este proyecto (ver conversacion
+// sobre subir fotos de producto). Estas reglas bloquean todo por defecto
+// para que, cuando se active desde la consola de Firebase, no quede
+// accidentalmente en modo "test" (abierto). Cuando se implemente la subida
+// de fotos, sustituir esto por reglas especificas para esa ruta (p.ej.
+// products/{productId}.png) con validacion de tamano/tipo de archivo.
+
+service firebase.storage {
+  match /b/{bucket}/o {
+    match /{allPaths=**} {
+      allow read, write: if false;
+    }
+  }
+}
