@@ -25,7 +25,11 @@ service cloud.firestore {
         && data.activo is bool
         && data.consumoMensual is number
         && data.consumoMensual >= 0
-        && data.consumoMensual <= 100000;
+        && data.consumoMensual <= 100000
+        && (!('imagenUrl' in data)
+          || (data.imagenUrl is string
+            && data.imagenUrl.size() > 0
+            && data.imagenUrl.size() <= 500));
     }
 
     match /products/{productId} {
@@ -36,12 +40,12 @@ service cloud.firestore {
         && request.resource.data.activo == true
         && request.resource.data.consumoMensual == 0
         && request.resource.data.keys().hasOnly(
-          ['nombre', 'unidad', 'stock', 'activo', 'consumoMensual']
+          ['nombre', 'unidad', 'stock', 'activo', 'consumoMensual', 'imagenUrl']
         );
 
       allow update: if isValidProduct(request.resource.data)
         && request.resource.data.keys().hasOnly(
-          ['nombre', 'unidad', 'stock', 'activo', 'consumoMensual']
+          ['nombre', 'unidad', 'stock', 'activo', 'consumoMensual', 'imagenUrl']
         );
 
       allow delete: if false;

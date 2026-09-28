@@ -4,6 +4,16 @@
 
 <form class="create-product__form" [formGroup]="form" (ngSubmit)="save()">
   <div class="form-field">
+    <label for="imagen">Foto del producto</label>
+
+    @if (previewUrl(); as url) {
+      <img [src]="url" class="create-product__preview" alt="" />
+    }
+
+    <input id="imagen" type="file" accept="image/*" (change)="onFileSelected($event)" />
+  </div>
+
+  <div class="form-field">
     <label for="nombre">Nombre</label>
 
     <input #nombreInput id="nombre" type="text" formControlName="nombre" />

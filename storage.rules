@@ -1,14 +1,22 @@
 rules_version = '2';
 
-// Cloud Storage todavia no esta activado en este proyecto (ver conversacion
-// sobre subir fotos de producto). Estas reglas bloquean todo por defecto
-// para que, cuando se active desde la consola de Firebase, no quede
-// accidentalmente en modo "test" (abierto). Cuando se implemente la subida
-// de fotos, sustituir esto por reglas especificas para esa ruta (p.ej.
-// products/{productId}.png) con validacion de tamano/tipo de archivo.
+// Igual que en firestore.rules: la app no tiene login (modo kiosko), asi que
+// aqui solo se valida la FORMA del archivo (tamano y tipo), no "quien" sube.
+// La foto se guarda en products/{productId} usando el mismo id que el
+// documento de Firestore, sobrescribiendo la anterior si ya existia.
 
 service firebase.storage {
   match /b/{bucket}/o {
+    match /products/{productId} {
+      allow read: if true;
+
+      allow write: if productId.matches('^[a-z0-9-]+$')
+        && request.resource.size <= 5 * 1024 * 1024
+        && request.resource.contentType.matches('image/.*');
+
+      allow delete: if false;
+    }
+
     match /{allPaths=**} {
       allow read, write: if false;
     }

@@ -16,6 +16,14 @@
   gap: 18px;
 }
 
+.create-product__preview {
+  width: 96px;
+  height: 96px;
+  object-fit: cover;
+  border-radius: 12px;
+  border: 1px solid $color-border;
+}
+
 .create-product__footer {
   display: flex;
   justify-content: flex-end;

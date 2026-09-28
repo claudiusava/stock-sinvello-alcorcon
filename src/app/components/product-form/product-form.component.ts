@@ -8,6 +8,7 @@ import {
   inject,
   input,
   output,
+  signal,
 } from '@angular/core';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { StockService } from '../../services/stock.service';
@@ -36,6 +37,9 @@ export class ProductFormComponent implements AfterViewInit {
   @ViewChild('nombreInput')
   private readonly nombreInput?: ElementRef<HTMLInputElement>;
 
+  readonly previewUrl = signal<string | null>(null);
+  private selectedFile: File | null = null;
+
   constructor() {
     effect(() => {
       const product = this.product();
@@ -49,11 +53,24 @@ export class ProductFormComponent implements AfterViewInit {
         unidad: product.unidad,
         stock: product.stock,
       });
+
+      this.previewUrl.set(product.imagenUrl ?? `icons/${product.id}.png`);
     });
   }
 
   get isEditMode(): boolean {
     return this.product() !== null;
+  }
+
+  onFileSelected(event: Event): void {
+    const file = (event.target as HTMLInputElement).files?.[0];
+
+    if (!file) {
+      return;
+    }
+
+    this.selectedFile = file;
+    this.previewUrl.set(URL.createObjectURL(file));
   }
 
   async save(): Promise<void> {
@@ -66,9 +83,13 @@ export class ProductFormComponent implements AfterViewInit {
         await this.stockService.updateProduct(
           this.product()!.id,
           this.form.getRawValue(),
+          this.selectedFile ?? undefined,
         );
       } else {
-        await this.stockService.createProduct(this.form.getRawValue());
+        await this.stockService.createProduct(
+          this.form.getRawValue(),
+          this.selectedFile ?? undefined,
+        );
       }
 
       this.saved.emit();

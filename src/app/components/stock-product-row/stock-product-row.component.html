@@ -21,7 +21,7 @@
     <span class="stock-row__emoji">
       <img
         class="product-icon"
-        [src]="'icons/' + product.id + '.png'"
+        [src]="product.imagenUrl || ('icons/' + product.id + '.png')"
         [alt]="product.nombre"
         width="64"
         height="64"

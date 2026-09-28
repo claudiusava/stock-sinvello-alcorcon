@@ -11,6 +11,7 @@ import {
 } from '@angular/fire/app-check';
 import { FirebaseApp, initializeApp, provideFirebaseApp } from '@angular/fire/app';
 import { getFirestore, provideFirestore } from '@angular/fire/firestore';
+import { getStorage, provideStorage } from '@angular/fire/storage';
 import { provideRouter } from '@angular/router';
 
 import { environment } from '../environments/environment';
@@ -23,6 +24,7 @@ export const appConfig: ApplicationConfig = {
     provideRouter(routes),
     provideFirebaseApp(() => initializeApp(environment.firebase)),
     provideFirestore(() => getFirestore()),
+    provideStorage(() => getStorage()),
     provideAppCheck((injector) => {
       // En local (ng serve) usa un token de depuracion fijo en vez de
       // reCAPTCHA, para no depender del dominio real. Es un valor fijo (no
