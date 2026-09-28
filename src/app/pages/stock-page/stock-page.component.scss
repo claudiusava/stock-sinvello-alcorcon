@@ -20,14 +20,28 @@
   max-width: 1120px;
 }
 
-@media (max-width: 900px) {
+@media (max-width: 1000px) {
   .stock-page {
     padding: 12px;
-    // fila de producto en móvil es más alta (dos líneas)
-    padding-block: 210px;
+    // la fila ya no cambia de estructura en pantallas estrechas, solo
+    // encoge -- el margen se reduce a juego con su nueva altura.
+    padding-block: 120px;
   }
 
   .stock-page__list {
     gap: 10px;
+  }
+}
+
+@media (max-width: 600px) {
+  .stock-page {
+    padding-block: 90px;
+  }
+}
+
+@media (max-width: 480px) {
+  .stock-page {
+    padding: 8px;
+    padding-block: 70px;
   }
 }

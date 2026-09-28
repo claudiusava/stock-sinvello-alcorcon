@@ -24,14 +24,16 @@ export const appConfig: ApplicationConfig = {
     provideFirebaseApp(() => initializeApp(environment.firebase)),
     provideFirestore(() => getFirestore()),
     provideAppCheck((injector) => {
-      // En local (ng serve) usa un token de depuracion en vez de reCAPTCHA,
-      // para no depender del dominio real. Hay que registrar ese token en
-      // Firebase Console > App Check > Apps la primera vez que se imprima
-      // por consola.
+      // En local (ng serve) usa un token de depuracion fijo en vez de
+      // reCAPTCHA, para no depender del dominio real. Es un valor fijo (no
+      // "true") a proposito: con "true" el SDK genera uno aleatorio nuevo en
+      // cada arranque y hay que volver a registrarlo siempre en Firebase
+      // Console > App Check > tokens de depuracion. Con un valor fijo, se
+      // registra una unica vez y sirve para siempre, en cualquier maquina.
       if (isDevMode()) {
         (self as unknown as Record<string, unknown>)[
           'FIREBASE_APPCHECK_DEBUG_TOKEN'
-        ] = true;
+        ] = '1f62a6be-0f7f-4228-b3b5-2348d5e017b4';
       }
 
       const app = injector.get(FirebaseApp);

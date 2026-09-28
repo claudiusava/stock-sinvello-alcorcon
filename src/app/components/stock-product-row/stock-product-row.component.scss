@@ -11,7 +11,12 @@
   border-radius: 18px;
   box-shadow: 0 8px 20px rgba(24, 24, 24, 0.06);
   display: grid;
-  grid-template-columns: 88px 70px 1fr 70px auto;
+  // las columnas de los extremos miden lo mismo (el ancho real del bloque
+  // "+"/cantidad de la derecha) a proposito, para que la columna central
+  // quede siempre centrada de verdad en la tarjeta, sea cual sea el ancho
+  // de pantalla, en vez de depender de que ambos lados "casualmente" pesen
+  // parecido.
+  grid-template-columns: 222px 70px 1fr 70px 222px;
   gap: 18px;
   min-height: 112px;
   padding: 16px 20px;
@@ -49,6 +54,10 @@
 
 .stock-row__button--minus {
   background: #2f3337;
+  // sin esto, al ensanchar su columna para el reparto simetrico, el grid
+  // estiraria el boton para rellenarla entera en vez de dejarlo pegado
+  // al borde izquierdo con su tamano normal.
+  justify-self: start;
 }
 
 .stock-row__button--plus {
@@ -119,66 +128,50 @@
   margin-top: 6px;
 }
 
-@media (max-width: 900px) {
+// A partir de aqui, la fila sigue siendo SIEMPRE una unica linea (mismo
+// grid de 5 columnas) en cualquier ancho de pantalla -- lo unico que
+// cambia por breakpoint es el tamano de los elementos, nunca la
+// estructura, para que nunca mas se "desordene" en una tablet nueva o
+// en una resolucion rara. Cada tramo recalcula sus propias columnas de
+// los extremos para que sigan pesando exactamente lo mismo entre si
+// (boton + separador + hueco = mismo valor a ambos lados).
+
+@media (max-width: 1000px) {
   .stock-row {
-    display: flex;
-    flex-wrap: wrap;
-    align-items: center;
-    gap: 10px 12px;
-    min-height: 0;
-    padding: 12px;
-  }
-
-  .stock-row__product {
-    order: 1;
-    flex: 1 1 100%;
-    justify-content: flex-start;
-  }
-
-  .stock-row__button--minus {
-    order: 2;
-  }
-
-  .stock-row__today-left {
-    order: 3;
-  }
-
-  .stock-row__today-right {
-    order: 4;
-  }
-
-  .stock-row__right {
-    order: 5;
-    margin-left: auto;
-    grid-template-columns: 68px 96px;
+    grid-template-columns: 158px 46px 1fr 46px 158px;
     gap: 12px;
+    min-height: 96px;
+    padding: 14px;
   }
 
   .stock-row__button {
     border-radius: 14px;
-    font-size: 3rem;
-    height: 68px;
-    min-width: 68px;
+    font-size: 2.6rem;
+    height: 64px;
+    min-width: 64px;
   }
 
   .stock-row__emoji {
-    font-size: 2.25rem;
+    font-size: 2rem;
+  }
+
+  .product-icon {
+    width: 48px;
+    height: 48px;
   }
 
   .stock-row__name {
-    font-size: 1.25rem;
+    font-size: 1.3rem;
   }
 
-  .stock-row__consumo {
-    position: static;
-    order: 6;
-    flex: 1 1 100%;
-    font-size: 0.6rem;
+  .stock-row__right {
+    grid-template-columns: 64px 84px;
+    gap: 10px;
   }
 
   .stock-row__stock {
-    min-width: 96px;
-    padding-left: 12px;
+    min-width: 84px;
+    padding-left: 10px;
   }
 
   .stock-row__stock strong {
@@ -189,6 +182,142 @@
     font-size: 0.85rem;
     white-space: normal;
     text-align: right;
+  }
+
+  .stock-row__today-consumed,
+  .stock-row__today-added {
+    font-size: 0.8rem;
+  }
+}
+
+@media (max-width: 600px) {
+  .stock-row {
+    grid-template-columns: 110px 30px 1fr 30px 110px;
+    gap: 8px;
+    min-height: 80px;
+    padding: 10px;
+  }
+
+  .stock-row__button {
+    border-radius: 12px;
+    font-size: 2rem;
+    height: 48px;
+    min-width: 48px;
+  }
+
+  .stock-row__emoji {
+    font-size: 1.4rem;
+  }
+
+  .product-icon {
+    width: 36px;
+    height: 36px;
+  }
+
+  .stock-row__name {
+    font-size: 1rem;
+  }
+
+  .stock-row__right {
+    grid-template-columns: 48px 56px;
+    gap: 6px;
+  }
+
+  .stock-row__stock {
+    min-width: 56px;
+    padding-left: 6px;
+  }
+
+  .stock-row__stock strong {
+    font-size: 1.4rem;
+  }
+
+  .stock-row__stock span {
+    font-size: 0.65rem;
+  }
+
+  .stock-row__today-consumed,
+  .stock-row__today-added {
+    font-size: 0.65rem;
+  }
+
+  .stock-row__consumo {
+    font-size: 0.55rem;
+  }
+}
+
+// Movil real (no es el hardware objetivo, pero por debajo de ~480px el
+// tramo anterior deja tan poco sitio a la columna central que el icono ni
+// siquiera cabe. Este tramo la encoge mas para que nunca llegue a 0.
+@media (max-width: 480px) {
+  .stock-row {
+    grid-template-columns: 88px 20px 1fr 20px 88px;
+    gap: 6px;
+    min-height: 64px;
+    padding: 8px;
+  }
+
+  .stock-row__button {
+    border-radius: 10px;
+    font-size: 1.6rem;
+    height: 40px;
+    min-width: 40px;
+  }
+
+  .stock-row__product {
+    // el gap por defecto (16px) sobra en un tramo tan angosto -- aqui cada
+    // pixel de sitio le hace falta al nombre.
+    gap: 4px;
+  }
+
+  .stock-row__emoji {
+    font-size: 1rem;
+  }
+
+  .product-icon {
+    width: 22px;
+    height: 22px;
+  }
+
+  .stock-row__name {
+    font-size: 0.8rem;
+    // a este ancho ya no hay sitio ni para dos palabras envueltas sin que
+    // la fila se dispare de alta -- se trunca en una linea en vez de
+    // envolver letra a letra.
+    overflow-wrap: normal;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    // sin esto, al ser flex item, no se encoge por debajo del ancho de su
+    // propio texto y el ellipsis nunca llega a activarse.
+    min-width: 0;
+  }
+
+  .stock-row__right {
+    grid-template-columns: 40px 44px;
+    gap: 4px;
+  }
+
+  .stock-row__stock {
+    min-width: 44px;
+    padding-left: 5px;
+  }
+
+  .stock-row__stock strong {
+    font-size: 1.1rem;
+  }
+
+  .stock-row__stock span {
+    font-size: 0.55rem;
+  }
+
+  .stock-row__today-consumed,
+  .stock-row__today-added {
+    font-size: 0.55rem;
+  }
+
+  .stock-row__consumo {
+    display: none;
   }
 }
 
@@ -210,7 +339,9 @@
 .stock-row__today-added {
   font-size: 0.9rem;
   font-weight: 700;
-  white-space: nowrap;
+  // sin nowrap, si la columna se estrecha en un tramo angosto el texto
+  // envuelve dentro de su propia columna en vez de invadir la de al lado.
+  text-align: center;
 }
 
 .stock-row__today-consumed {
