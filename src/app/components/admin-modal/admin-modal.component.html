@@ -12,8 +12,9 @@
       @case ("product-form") {
         <app-product-form
           [product]="selectedProduct()"
-          (cancel)="backToMenu()"
-          (saved)="close.emit()"
+          (cancel)="cancelProductForm()"
+          (saved)="onProductSaved()"
+          (saveError)="onProductError($event)"
         />
       }
 
@@ -21,6 +22,8 @@
         <app-manage-products
           (back)="backToMenu()"
           (editProduct)="openEditProduct($event)"
+          (deleted)="onProductDeleted()"
+          (deleteError)="onProductError($event)"
         />
       }
     }

@@ -4,6 +4,7 @@ import {
   Firestore,
   collection,
   collectionData,
+  deleteDoc,
   doc,
   getDoc,
   orderBy,
@@ -14,7 +15,13 @@ import {
   updateDoc,
   where,
 } from '@angular/fire/firestore';
-import { Storage, getDownloadURL, ref, uploadBytes } from '@angular/fire/storage';
+import {
+  Storage,
+  deleteObject,
+  getDownloadURL,
+  ref,
+  uploadBytes,
+} from '@angular/fire/storage';
 import { Observable } from 'rxjs';
 import { StockProduct } from '../models/stock-product.model';
 import { ProductForm } from '../models/product-form.model';
@@ -176,5 +183,16 @@ export class StockService {
     await updateDoc(doc(this.firestore, 'products', productId), {
       activo,
     });
+  }
+
+  async deleteProduct(productId: string): Promise<void> {
+    await deleteDoc(doc(this.firestore, 'products', productId));
+
+    // Best-effort: no todos los productos tienen foto subida (algunos usan
+    // el icono generico empaquetado), asi que si no existe en Storage no
+    // pasa nada.
+    await deleteObject(ref(this.storage, `products/${productId}`)).catch(
+      () => undefined,
+    );
   }
 }

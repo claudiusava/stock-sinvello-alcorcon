@@ -17,6 +17,18 @@
   @if (adminOpen()) {
     <app-admin-modal
       (close)="closeAdmin()"
+      (feedback)="showToast($event)"
     />
+  }
+
+  @if (toastMessage(); as toast) {
+    <div
+      class="stock-page__toast"
+      [class.stock-page__toast--error]="toast.type === 'error'"
+      role="status"
+    >
+      <span class="stock-page__toast-icon">{{ toast.type === "error" ? "❌" : "✅" }}</span>
+      {{ toast.text }}
+    </div>
   }
 </main>

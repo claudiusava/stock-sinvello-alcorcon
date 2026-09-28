@@ -45,3 +45,30 @@
     padding-block: 70px;
   }
 }
+
+.stock-page__toast {
+  position: fixed;
+  left: 50%;
+  bottom: 32px;
+  transform: translateX(-50%);
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  background: #2e7d32;
+  color: #ffffff;
+  padding: 14px 24px;
+  border-radius: 12px;
+  font-size: 1rem;
+  font-weight: 600;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.25);
+  z-index: 1200;
+}
+
+.stock-page__toast--error {
+  background: #d32f2f;
+}
+
+.stock-page__toast-icon {
+  font-size: 1.1rem;
+  line-height: 1;
+}

@@ -48,7 +48,13 @@ service cloud.firestore {
           ['nombre', 'unidad', 'stock', 'activo', 'consumoMensual', 'imagenUrl']
         );
 
-      allow delete: if false;
+      // A diferencia del resto de reglas de aqui (que deliberadamente no
+      // exigen todavia App Check, ver nota de arriba), borrar es irreversible
+      // y no hay nada que validar en la forma de los datos como en create/
+      // update, asi que aqui si se exige un token de App Check valido desde
+      // ya: mejor que el borrado no funcione hasta confirmar que el trafico
+      // real lo manda, que arriesgarse a un borrado masivo por curl/script.
+      allow delete: if request.app != null;
     }
 
     match /stockMovements/{movementId} {

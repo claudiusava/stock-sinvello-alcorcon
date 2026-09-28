@@ -47,6 +47,32 @@
   gap: 12px;
 }
 
+.icon-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  border: 0;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: transform 0.15s;
+}
+
+.icon-button:active {
+  transform: scale(0.92);
+}
+
+.icon-button--edit {
+  background: #e3f2fd;
+  color: #1565c0;
+}
+
+.icon-button--delete {
+  background: #fdecea;
+  color: $color-danger;
+}
+
 .manage-products__name {
   font-size: 1.05rem;
   font-weight: 600;
@@ -58,4 +84,38 @@
   justify-content: flex-end;
 
   margin-top: 24px;
+}
+
+.confirm-delete {
+  position: fixed;
+  inset: 0;
+  z-index: 1100;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  background: rgba(0, 0, 0, 0.5);
+}
+
+.confirm-delete__box {
+  background: #ffffff;
+  border-radius: 16px;
+  padding: 28px;
+  width: 380px;
+  max-width: calc(100vw - 32px);
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+}
+
+.confirm-delete__text {
+  margin: 0 0 24px;
+  font-size: 1.05rem;
+  line-height: 1.4;
+  color: $color-text;
+}
+
+.confirm-delete__actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 12px;
 }

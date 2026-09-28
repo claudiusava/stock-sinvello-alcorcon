@@ -4,6 +4,7 @@ import {
   Component,
   ElementRef,
   ViewChild,
+  computed,
   effect,
   inject,
   input,
@@ -25,6 +26,7 @@ import { StockProduct } from '../../models/stock-product.model';
 export class ProductFormComponent implements AfterViewInit {
   readonly cancel = output<void>();
   readonly saved = output<void>();
+  readonly saveError = output<string>();
   readonly product = input<StockProduct | null>(null);
   private readonly stockService = inject(StockService);
   private readonly fb = inject(FormBuilder);
@@ -37,7 +39,24 @@ export class ProductFormComponent implements AfterViewInit {
   @ViewChild('nombreInput')
   private readonly nombreInput?: ElementRef<HTMLInputElement>;
 
-  readonly previewUrl = signal<string | null>(null);
+  // Foto recien elegida en este formulario, si la hay; si no, se muestra la
+  // del producto actual (o el icono generico). Como computed derivado en vez
+  // de escrito dentro del effect de abajo: escribir una signal dentro de un
+  // effect esta prohibido por defecto en Angular y rompia el formulario de
+  // edicion (NG0600) sin dar ningun error visible al usuario.
+  private readonly manualPreview = signal<string | null>(null);
+  readonly previewUrl = computed(() => {
+    const manual = this.manualPreview();
+
+    if (manual) {
+      return manual;
+    }
+
+    const product = this.product();
+
+    return product ? (product.imagenUrl ?? `icons/${product.id}.png`) : null;
+  });
+
   private selectedFile: File | null = null;
 
   constructor() {
@@ -53,8 +72,6 @@ export class ProductFormComponent implements AfterViewInit {
         unidad: product.unidad,
         stock: product.stock,
       });
-
-      this.previewUrl.set(product.imagenUrl ?? `icons/${product.id}.png`);
     });
   }
 
@@ -70,7 +87,7 @@ export class ProductFormComponent implements AfterViewInit {
     }
 
     this.selectedFile = file;
-    this.previewUrl.set(URL.createObjectURL(file));
+    this.manualPreview.set(URL.createObjectURL(file));
   }
 
   async save(): Promise<void> {
@@ -94,7 +111,9 @@ export class ProductFormComponent implements AfterViewInit {
 
       this.saved.emit();
     } catch (error) {
-      alert(error instanceof Error ? error.message : 'Ha ocurrido un error.');
+      this.saveError.emit(
+        error instanceof Error ? error.message : 'Ha ocurrido un error.',
+      );
     }
   }
 

@@ -5,6 +5,7 @@ import { AdminModalComponent } from '../../components/admin-modal/admin-modal.co
 import { StockProductRowComponent } from '../../components/stock-product-row/stock-product-row.component';
 import { StockMovementService } from '../../services/stock-movement.service';
 import { StockService } from '../../services/stock.service';
+import { ToastMessage } from '../../models/toast-message.model';
 
 @Component({
   selector: 'app-stock-page',
@@ -24,6 +25,14 @@ export class StockPageComponent {
     this.stockMovementService.getTodayMovements();
 
   readonly adminOpen = signal(false);
+  readonly toastMessage = signal<ToastMessage | null>(null);
+  private toastTimeout?: ReturnType<typeof setTimeout>;
+
+  showToast(toast: ToastMessage): void {
+    clearTimeout(this.toastTimeout);
+    this.toastMessage.set(toast);
+    this.toastTimeout = setTimeout(() => this.toastMessage.set(null), 3000);
+  }
 
   increase(productId: string): void {
     void this.stockService.changeStock(productId, 1);
