@@ -12,6 +12,14 @@ import { ToggleComponent } from '../toggle/toggle.component';
 
 const DELETE_COUNTDOWN_SECONDS = 5;
 
+// El boton de eliminar (y este flujo de confirmacion) esta implementado
+// pero oculto en la plantilla: firestore.rules exige App Check valido
+// para borrar (request.app != null), y en la consola de Firebase
+// (App Check > APIs > Cloud Firestore) solo el 62% del trafico sale como
+// verificado ahora mismo. Activar "Aplicar" con ese ratio arriesgaria a
+// romper la app en la tablet real. Cuando se confirme que ese porcentaje
+// sube de forma estable, se reactiva el boton en el HTML.
+
 @Component({
   selector: 'app-manage-products',
   standalone: true,
