@@ -54,7 +54,7 @@ export class ProductFormComponent implements AfterViewInit {
 
     const product = this.product();
 
-    return product ? (product.imagenUrl ?? `icons/${product.id}.png`) : null;
+    return product ? (product.imagenUrl ?? `icons/${product.id}.webp`) : null;
   });
 
   private selectedFile: File | null = null;
