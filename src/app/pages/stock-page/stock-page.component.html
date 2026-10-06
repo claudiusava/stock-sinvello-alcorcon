@@ -1,16 +1,24 @@
 ﻿<main class="stock-page">
   <section class="stock-page__list" aria-label="Inventario">
-    @if (products$ | async; as products) {
-      @if (todayMovements$ | async; as todayMovements) {
-        @for (product of products; track product.id) {
-          <app-stock-product-row
-            [product]="product"
-            [todayMovement]="todayMovements[product.id]"
-            (increase)="increase($event)"
-            (decrease)="decrease($event)"
-          />
-        }
+    @if (viewModel$ | async; as vm) {
+      @for (product of vm.products; track product.id) {
+        <app-stock-product-row
+          [product]="product"
+          [todayMovement]="vm.todayMovements[product.id]"
+          (increase)="increase($event)"
+          (decrease)="decrease($event)"
+        />
       }
+    } @else {
+      <div class="stock-page__loading" role="status" aria-live="polite">
+        <span class="stock-page__spinner" aria-hidden="true"></span>
+
+        @if (loadingTimedOut()) {
+          <p class="stock-page__loading-message">
+            No se pudo cargar la lista de productos. Reintentando…
+          </p>
+        }
+      </div>
     }
   </section>
 

@@ -46,6 +46,41 @@
   }
 }
 
+.stock-page__loading {
+  position: fixed;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 20px;
+  padding: 24px;
+  text-align: center;
+}
+
+.stock-page__spinner {
+  width: 56px;
+  height: 56px;
+  border: 5px solid rgba(23, 23, 23, 0.15);
+  border-top-color: #171717;
+  border-radius: 50%;
+  animation: stock-page-spin 0.9s linear infinite;
+}
+
+.stock-page__loading-message {
+  margin: 0;
+  max-width: 320px;
+  color: #171717;
+  font-size: 1.1rem;
+  font-weight: 600;
+}
+
+@keyframes stock-page-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
 .stock-page__toast {
   position: fixed;
   left: 50%;

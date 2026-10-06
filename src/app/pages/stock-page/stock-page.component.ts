@@ -1,5 +1,6 @@
 ﻿import { AsyncPipe } from '@angular/common';
-import { ChangeDetectionStrategy, Component, HostListener, inject, signal } from '@angular/core';
+import { ChangeDetectionStrategy, Component, DestroyRef, HostListener, inject, signal } from '@angular/core';
+import { combineLatest, map } from 'rxjs';
 
 import { AdminModalComponent } from '../../components/admin-modal/admin-modal.component';
 import { StockProductRowComponent } from '../../components/stock-product-row/stock-product-row.component';
@@ -19,10 +20,18 @@ export class StockPageComponent {
   private readonly stockService = inject(StockService);
   private readonly stockMovementService = inject(StockMovementService);
 
-  readonly products$ = this.stockService.activeProducts$;
+  readonly viewModel$ = combineLatest([
+    this.stockService.activeProducts$,
+    this.stockMovementService.getTodayMovements(),
+  ]).pipe(map(([products, todayMovements]) => ({ products, todayMovements })));
 
-  readonly todayMovements$ =
-    this.stockMovementService.getTodayMovements();
+  readonly loadingTimedOut = signal(false);
+
+  constructor() {
+    const loadingTimeout = setTimeout(() => this.loadingTimedOut.set(true), 30000);
+
+    inject(DestroyRef).onDestroy(() => clearTimeout(loadingTimeout));
+  }
 
   readonly adminOpen = signal(false);
   readonly toastMessage = signal<ToastMessage | null>(null);
